@@ -9,9 +9,20 @@ module.exports = {
   ALLOWED_HOSTS: ['localhost', '127.0.0.1', '0.0.0.0'],
   JWT_EXPIRY: '24h',
   
-  // Database - use in-memory for production (Railway has ephemeral filesystem)
+  // Database - use in-memory for serverless (Vercel/Railway)
   DATABASE: {
     dialect: 'sqlite',
+    dialectModule: (() => {
+      try {
+        return require('better-sqlite3');
+      } catch {
+        try {
+          return require('sqlite3');
+        } catch {
+          return null;
+        }
+      }
+    })(),
     storage: process.env.NODE_ENV === 'production' ? ':memory:' : './db.sqlite3',
     logging: false
   },

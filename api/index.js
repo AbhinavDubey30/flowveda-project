@@ -10,9 +10,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Dynamically require the backend models and routes
-const { sequelize } = require('../backend/models');
-const config = require('../backend/config');
+// Try to load database models (optional for CSV-only mode)
+let sequelize = null;
+let config = null;
+
+try {
+  const models = require('../backend/models');
+  sequelize = models.sequelize;
+  config = require('../backend/config');
+  console.log('✅ Database models loaded');
+} catch (error) {
+  console.warn('⚠️ Database not available, running in CSV-only mode:', error.message);
+  config = require('../backend/config');
+}
 
 // Import routes
 const authRoutes = require('../backend/routes/auth');
@@ -22,16 +32,17 @@ const waterRoutes = require('../backend/routes/water');
 const billRoutes = require('../backend/routes/bills');
 const subscriptionRoutes = require('../backend/routes/subscriptions');
 
-// Initialize database on cold start
+// Initialize database on cold start (optional)
 let dbInitialized = false;
 async function initDatabase() {
-  if (!dbInitialized) {
+  if (!dbInitialized && sequelize) {
     try {
       await sequelize.sync({ alter: false });
       console.log('✅ Database synced successfully');
       dbInitialized = true;
     } catch (error) {
-      console.error('❌ Database sync failed:', error);
+      console.warn('⚠️ Database sync failed (CSV mode will work):', error.message);
+      dbInitialized = true; // Don't retry
     }
   }
 }
