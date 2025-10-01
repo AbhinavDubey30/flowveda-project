@@ -1,0 +1,81 @@
+# Dependencies (will be installed during build)
+node_modules
+*/node_modules
+
+# Python virtual environment
+backend/venv
+venv
+*.pyc
+__pycache__
+
+# Database files (use in-memory for production)
+*.sqlite
+*.sqlite3
+*.db
+db.sqlite3
+backend/db.sqlite3
+
+# Build artifacts (will be regenerated)
+frontend/build
+frontend/.next
+frontend/out
+backend/dist
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.env
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# Test files
+*.test.js
+*.spec.js
+__tests__
+**/*.test.*
+**/*.spec.*
+
+# Documentation (not needed in production)
+*.md
+!README.md
+
+# Lambda deployment files
+lambda-deployment
+
+# Scripts
+*.sh
+*.bat
+
+# AWS credentials
+.aws
+*.pem
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Vercel
+.vercel
+
+# Python migrations
+backend/api/migrations
+

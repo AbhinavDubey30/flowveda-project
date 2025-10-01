@@ -4,7 +4,37 @@
   "description": "FlowVeda Water Management System",
   "private": true,
   "scripts": {
-    "build": "cd frontend && npm install && npm run build"
+    "build": "node build-frontend.js",
+    "build:frontend": "node build-frontend.js",
+    "vercel-build": "node build-frontend.js",
+    "install-all": "node install-all.js",
+    "install:frontend": "cd frontend & npm install",
+    "install:backend": "cd backend & npm install",
+    "install:api": "cd api & npm install",
+    "dev": "node backend/server.js",
+    "dev:frontend": "cd frontend & npm start",
+    "dev:backend": "cd backend & npm start",
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0",
+    "sequelize": "^6.35.0",
+    "sqlite3": "^5.1.6",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "csv-parser": "^3.0.0",
+    "csv-parse": "^5.5.3",
+    "aws-sdk": "^2.1490.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=18.x",
+    "npm": ">=9.x"
   },
   "repository": {
     "type": "git",
