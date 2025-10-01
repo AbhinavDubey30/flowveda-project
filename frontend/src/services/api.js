@@ -1,6 +1,7 @@
 
 import axios from 'axios';
-const API_BASE = process.env.REACT_APP_API_BASE || 'https://flowveda-project-production.up.railway.app/api';
+// Production API URL
+const API_BASE = 'https://flowveda-project-production.up.railway.app/api';
 
 export function setAuthToken(token){
   if(token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
