@@ -1,0 +1,6 @@
+# No external dependencies required for this Lambda function
+# Using only Python standard library modules:
+# - json
+# - csv
+# - os
+# - datetime
