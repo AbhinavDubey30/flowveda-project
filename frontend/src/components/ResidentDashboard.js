@@ -23,11 +23,11 @@ const ResidentDashboard = () => {
       setLoading(true);
       
       // Fetch water quality data
-      const qualityResponse = await axios.get(`${API_BASE}/water-quality/`);
+      const qualityResponse = await axios.get(`${API_BASE}/water-quality`);
       setWaterQuality(qualityResponse.data);
 
       // Fetch billing data
-      const billingResponse = await axios.get(`${API_BASE}/billing/${householdId}/`);
+      const billingResponse = await axios.get(`${API_BASE}/billing/${householdId}`);
       setBillingData(billingResponse.data);
 
     } catch (err) {
@@ -40,7 +40,7 @@ const ResidentDashboard = () => {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post(`${API_BASE}/pay-bill/`, {
+      const response = await axios.post(`${API_BASE}/pay-bill`, {
         household_id: householdId,
         amount: billingData?.amount_payable
       });

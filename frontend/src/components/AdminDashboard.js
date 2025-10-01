@@ -24,15 +24,15 @@ const AdminDashboard = () => {
       setLoading(true);
       
       // Fetch water quality data
-      const qualityResponse = await axios.get(`${API_BASE}/water-quality/`);
+      const qualityResponse = await axios.get(`${API_BASE}/water-quality`);
       setWaterQuality(qualityResponse.data);
 
       // Fetch consumption data
-      const consumptionResponse = await axios.get(`${API_BASE}/zone-consumption/`);
+      const consumptionResponse = await axios.get(`${API_BASE}/zone-consumption`);
       setConsumptionData(consumptionResponse.data);
 
       // Fetch tampering alert
-      const tamperingResponse = await axios.get(`${API_BASE}/tampering-alert/?threshold=${threshold}`);
+      const tamperingResponse = await axios.get(`${API_BASE}/tampering-alert?threshold=${threshold}`);
       setTamperingAlert(tamperingResponse.data);
 
     } catch (err) {
