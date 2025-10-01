@@ -68,11 +68,20 @@ async function startServer() {
     await sequelize.sync({ alter: false });
     console.log('✅ Database synced successfully');
     
-    // Start server
-    app.listen(PORT, () => {
+    // Start server - bind to 0.0.0.0 for Railway
+    const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 FlowVeda API server running on port ${PORT}`);
       console.log(`📍 Environment: ${config.DEBUG ? 'Development' : 'Production'}`);
     });
+
+    // Handle graceful shutdown
+    process.on('SIGTERM', () => {
+      console.log('SIGTERM signal received: closing HTTP server');
+      server.close(() => {
+        console.log('HTTP server closed');
+      });
+    });
+    
   } catch (error) {
     console.error('❌ Failed to start server:', error);
     process.exit(1);
