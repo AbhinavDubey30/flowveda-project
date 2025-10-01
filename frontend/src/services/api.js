@@ -8,11 +8,11 @@ export function setAuthToken(token){
 }
 
 export async function register(data){
-  const res = await axios.post(API_BASE + '/auth/register/', data);
+  const res = await axios.post(API_BASE + '/auth/register', data);
   return res.data;
 }
 export async function login(data){
-  const res = await axios.post(API_BASE + '/auth/login/', data);
+  const res = await axios.post(API_BASE + '/auth/login', data);
   return res.data;
 }
 export async function getReadings(){
@@ -20,23 +20,23 @@ export async function getReadings(){
   return res.data;
 }
 export async function getDevices(){
-  const res = await axios.get(API_BASE + '/devices/');
+  const res = await axios.get(API_BASE + '/devices');
   return res.data;
 }
 export async function getForecast(){
-  const res = await axios.get(API_BASE + '/forecast/');
+  const res = await axios.get(API_BASE + '/forecast');
   return res.data;
 }
 export async function getAnomalies(){
-  const res = await axios.get(API_BASE + '/anomalies/');
+  const res = await axios.get(API_BASE + '/anomalies');
   return res.data;
 }
 export async function getBills(){
-  const res = await axios.get(API_BASE + '/bills/');
+  const res = await axios.get(API_BASE + '/bills');
   return res.data;
 }
 export async function subscribe(plan='premium'){
-  const res = await axios.post(API_BASE + '/subscribe/', {plan});
+  const res = await axios.post(API_BASE + '/subscribe', {plan});
   return res.data;
 }
 export async function payBill(id){
@@ -44,13 +44,13 @@ export async function payBill(id){
   return res.data;
 }
 export async function addDevice(data){
-  const res = await axios.post(API_BASE + '/devices/', data);
+  const res = await axios.post(API_BASE + '/devices', data);
   return res.data;
 }
 
 // Telemetry API functions
 export async function getSchema(){
-  const res = await axios.get(API_BASE + '/telemetry/schema/');
+  const res = await axios.get(API_BASE + '/telemetry/schema');
   return res.data;
 }
 
@@ -65,7 +65,7 @@ export async function getTelemetry(parameter, options = {}){
 }
 
 export async function getLatest() {
-  const res = await axios.get(API_BASE + '/telemetry/latest/');
+  const res = await axios.get(API_BASE + '/telemetry/latest');
   return res.data;
 }
 
@@ -74,6 +74,6 @@ export async function getSeries(parameter, limit = 200){
     parameter,
     limit: limit.toString()
   });
-  const res = await axios.get(API_BASE + '/telemetry/series/?' + params);
+  const res = await axios.get(API_BASE + '/telemetry/series?' + params);
   return res.data;
 }
