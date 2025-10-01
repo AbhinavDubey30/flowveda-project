@@ -9,10 +9,10 @@ module.exports = {
   ALLOWED_HOSTS: ['localhost', '127.0.0.1', '0.0.0.0'],
   JWT_EXPIRY: '24h',
   
-  // Database
+  // Database - use in-memory for production (Railway has ephemeral filesystem)
   DATABASE: {
     dialect: 'sqlite',
-    storage: './db.sqlite3',
+    storage: process.env.NODE_ENV === 'production' ? ':memory:' : './db.sqlite3',
     logging: false
   },
 
