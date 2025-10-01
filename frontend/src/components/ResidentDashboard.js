@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Set the API base URL for local development
-const API_BASE = 'http://127.0.0.1:8000/api';
+// Use relative URL for Vercel deployment
+const API_BASE = '/api';
 
 const ResidentDashboard = () => {
   const [waterQuality, setWaterQuality] = useState(null);

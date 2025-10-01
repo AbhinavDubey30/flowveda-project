@@ -5,7 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import 'leaflet/dist/leaflet.css';
 
 // Set the API base URL for local development
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = '/api';
 
 const AdminDashboard = () => {
   const [waterQuality, setWaterQuality] = useState(null);
