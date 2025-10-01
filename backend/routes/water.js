@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { s3DataAccess } = require('../utils/s3DataAccess');
 const config = require('../config');
-const { optionalAuth, verifyToken } = require('../middleware/auth');
+const { optionalAuth, verifyToken } = require('../middleware/auth-simple');
 
 // Water quality endpoint
 router.get('/water-quality', optionalAuth, async (req, res) => {

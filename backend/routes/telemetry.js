@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { csvReader } = require('../utils/csvReader');
-const { optionalAuth } = require('../middleware/auth');
+const { optionalAuth } = require('../middleware/auth-simple');
 
 // All telemetry routes are public (use optionalAuth)
 router.use(optionalAuth);
