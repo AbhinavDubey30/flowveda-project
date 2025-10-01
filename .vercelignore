@@ -60,9 +60,14 @@ __tests__
 # Lambda deployment files
 lambda-deployment
 
-# Scripts
+# Scripts (but keep data files!)
 *.sh
 *.bat
+
+# IMPORTANT: Include data files for deployment
+!data/*.csv
+!backend/api/data/*.csv
+!*.csv
 
 # AWS credentials
 .aws

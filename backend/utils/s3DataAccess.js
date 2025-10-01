@@ -28,12 +28,18 @@ class S3DataAccess {
 
   async getCSVFromS3(fileKey) {
     try {
-      // Try local file first
-      const projectRoot = path.join(__dirname, '../..');
-      const localPath = path.join(projectRoot, 'data', fileKey);
+      // Try multiple local paths (for different deployment contexts)
+      const possiblePaths = [
+        path.join(__dirname, '../../data', fileKey),  // root data folder
+        path.join(__dirname, '../../../data', fileKey),  // from api/ folder
+        path.join(__dirname, '../api/data', fileKey),  // backend/api/data
+      ];
 
-      if (fs.existsSync(localPath)) {
-        return await this.readLocalCSV(localPath);
+      for (const localPath of possiblePaths) {
+        if (fs.existsSync(localPath)) {
+          console.log(`✅ Found data file at: ${localPath}`);
+          return await this.readLocalCSV(localPath);
+        }
       }
 
       // If S3 client is available, try S3
@@ -48,6 +54,8 @@ class S3DataAccess {
         return await this.parseCSVString(csvString);
       }
 
+      console.error(`❌ File ${fileKey} not found in any of these locations:`);
+      possiblePaths.forEach(p => console.error(`  - ${p}`));
       throw new Error(`File ${fileKey} not found locally and S3 client not available`);
     } catch (error) {
       console.error(`Error fetching ${fileKey}:`, error.message);

@@ -2,7 +2,28 @@ const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
 
-const CSV_PATH = path.join(__dirname, '../api/data/dataset1.csv');
+// Try multiple possible paths for CSV files (for different deployment contexts)
+function findCSVPath() {
+  const possiblePaths = [
+    path.join(__dirname, '../api/data/dataset1.csv'),  // backend/api/data
+    path.join(__dirname, '../../backend/api/data/dataset1.csv'),  // from api/ folder
+    path.join(__dirname, '../../data/dataset1.csv'),  // root data folder
+    path.join(__dirname, '../../dataset1.csv'),  // root level
+  ];
+  
+  for (const csvPath of possiblePaths) {
+    if (fs.existsSync(csvPath)) {
+      console.log(`✅ Found CSV at: ${csvPath}`);
+      return csvPath;
+    }
+  }
+  
+  console.error('❌ CSV file not found in any of these locations:');
+  possiblePaths.forEach(p => console.error(`  - ${p}`));
+  return possiblePaths[0]; // Return first path as fallback
+}
+
+const CSV_PATH = findCSVPath();
 
 // Load CSV rows
 function loadRows() {
