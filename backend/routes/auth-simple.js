@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 // Mock users for demo (no database needed!)
+// Password for all users: admin123
 const MOCK_USERS = [
   {
     id: 1,
@@ -13,16 +14,68 @@ const MOCK_USERS = [
     password: '$2a$10$CwTycUXWue0Thq9StjUM0uJ8TZ7oeKMx.H1Z8XnrJpLZ8Vjh/5cJy', // admin123
     fullName: 'Municipal Admin',
     role: 'admin',
-    user_type: 'official'
+    user_type: 'official',
+    mobile_number: '9999999999',
+    municipality_name: 'Mumbai Municipal Corporation',
+    location: 'Mumbai, Maharashtra',
+    household_size: 1,
+    device_id: 'ADMIN-001'
   },
   {
     id: 2,
-    username: 'user1',
+    username: 'User-1',
     email: 'user1@example.com',
     password: '$2a$10$CwTycUXWue0Thq9StjUM0uJ8TZ7oeKMx.H1Z8XnrJpLZ8Vjh/5cJy', // admin123
-    fullName: 'Resident User',
+    fullName: 'Rajesh Kumar',
     role: 'user',
-    user_type: 'household'
+    user_type: 'household',
+    mobile_number: '9876543210',
+    municipality_name: '',
+    location: 'Andheri, Mumbai',
+    household_size: 4,
+    device_id: 'FLV-1001'
+  },
+  {
+    id: 3,
+    username: 'User-2',
+    email: 'user2@example.com',
+    password: '$2a$10$CwTycUXWue0Thq9StjUM0uJ8TZ7oeKMx.H1Z8XnrJpLZ8Vjh/5cJy', // admin123
+    fullName: 'Priya Sharma',
+    role: 'user',
+    user_type: 'household',
+    mobile_number: '9876543211',
+    municipality_name: '',
+    location: 'Bandra, Mumbai',
+    household_size: 3,
+    device_id: 'FLV-1002'
+  },
+  {
+    id: 4,
+    username: 'User-3',
+    email: 'user3@example.com',
+    password: '$2a$10$CwTycUXWue0Thq9StjUM0uJ8TZ7oeKMx.H1Z8XnrJpLZ8Vjh/5cJy', // admin123
+    fullName: 'Amit Patel',
+    role: 'user',
+    user_type: 'household',
+    mobile_number: '9876543212',
+    municipality_name: '',
+    location: 'Powai, Mumbai',
+    household_size: 5,
+    device_id: 'FLV-1003'
+  },
+  {
+    id: 5,
+    username: 'resident',
+    email: 'resident@example.com',
+    password: '$2a$10$CwTycUXWue0Thq9StjUM0uJ8TZ7oeKMx.H1Z8XnrJpLZ8Vjh/5cJy', // admin123
+    fullName: 'Demo Resident',
+    role: 'user',
+    user_type: 'household',
+    mobile_number: '9999888877',
+    municipality_name: '',
+    location: 'Mumbai, Maharashtra',
+    household_size: 2,
+    device_id: 'FLV-DEMO'
   }
 ];
 
