@@ -13,34 +13,22 @@ app.use(express.urlencoded({ extended: true }));
 // Load config (no database needed!)
 const config = require('../backend/config');
 
-// Import routes - use simple auth (no database)
+// Import ONLY CSV-based routes (no database required!)
 const authRoutes = require('../backend/routes/auth-simple');
 const telemetryRoutes = require('../backend/routes/telemetry');
 const waterRoutes = require('../backend/routes/water');
 
-// Import optional routes (gracefully handle if they fail)
-let deviceRoutes, billRoutes, subscriptionRoutes;
-try {
-  deviceRoutes = require('../backend/routes/devices');
-  billRoutes = require('../backend/routes/bills');
-  subscriptionRoutes = require('../backend/routes/subscriptions');
-  console.log('✅ All routes loaded');
-} catch (error) {
-  console.warn('⚠️ Some optional routes not available:', error.message);
-}
-
 // No database initialization needed - using CSV data only!
 console.log('🚀 Running in CSV-only mode (no database)');
+console.log('✅ Auth, Telemetry, and Water routes loaded');
 
-// Routes
+// Routes - all CSV-based
 app.use('/api/auth', authRoutes);
 app.use('/api/telemetry', telemetryRoutes);
 app.use('/api', waterRoutes);
 
-// Optional routes (only if loaded)
-if (deviceRoutes) app.use('/api/devices', deviceRoutes);
-if (billRoutes) app.use('/api/bills', billRoutes);
-if (subscriptionRoutes) app.use('/api/subscribe', subscriptionRoutes);
+// Note: Device, Bill, and Subscription routes are disabled (require database)
+// Dashboard works with CSV data from telemetry and water routes
 
 // Health check
 app.get('/api/health', (req, res) => {
