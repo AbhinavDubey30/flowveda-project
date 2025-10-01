@@ -1,7 +1,7 @@
 
 import axios from 'axios';
-// Production API URL
-const API_BASE = 'https://flowveda-project-production.up.railway.app/api';
+// Use relative URL - same domain as frontend
+const API_BASE = '/api';
 
 export function setAuthToken(token){
   if(token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
