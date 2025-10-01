@@ -10,50 +10,37 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Try to load database models (optional for CSV-only mode)
-let sequelize = null;
-let config = null;
+// Load config (no database needed!)
+const config = require('../backend/config');
 
-try {
-  const models = require('../backend/models');
-  sequelize = models.sequelize;
-  config = require('../backend/config');
-  console.log('✅ Database models loaded');
-} catch (error) {
-  console.warn('⚠️ Database not available, running in CSV-only mode:', error.message);
-  config = require('../backend/config');
-}
-
-// Import routes
-const authRoutes = require('../backend/routes/auth');
-const deviceRoutes = require('../backend/routes/devices');
+// Import routes - use simple auth (no database)
+const authRoutes = require('../backend/routes/auth-simple');
 const telemetryRoutes = require('../backend/routes/telemetry');
 const waterRoutes = require('../backend/routes/water');
-const billRoutes = require('../backend/routes/bills');
-const subscriptionRoutes = require('../backend/routes/subscriptions');
 
-// Initialize database on cold start (optional)
-let dbInitialized = false;
-async function initDatabase() {
-  if (!dbInitialized && sequelize) {
-    try {
-      await sequelize.sync({ alter: false });
-      console.log('✅ Database synced successfully');
-      dbInitialized = true;
-    } catch (error) {
-      console.warn('⚠️ Database sync failed (CSV mode will work):', error.message);
-      dbInitialized = true; // Don't retry
-    }
-  }
+// Import optional routes (gracefully handle if they fail)
+let deviceRoutes, billRoutes, subscriptionRoutes;
+try {
+  deviceRoutes = require('../backend/routes/devices');
+  billRoutes = require('../backend/routes/bills');
+  subscriptionRoutes = require('../backend/routes/subscriptions');
+  console.log('✅ All routes loaded');
+} catch (error) {
+  console.warn('⚠️ Some optional routes not available:', error.message);
 }
+
+// No database initialization needed - using CSV data only!
+console.log('🚀 Running in CSV-only mode (no database)');
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/devices', deviceRoutes);
 app.use('/api/telemetry', telemetryRoutes);
 app.use('/api', waterRoutes);
-app.use('/api/bills', billRoutes);
-app.use('/api/subscribe', subscriptionRoutes);
+
+// Optional routes (only if loaded)
+if (deviceRoutes) app.use('/api/devices', deviceRoutes);
+if (billRoutes) app.use('/api/bills', billRoutes);
+if (subscriptionRoutes) app.use('/api/subscribe', subscriptionRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -74,9 +61,6 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Export for Vercel serverless
-module.exports = async (req, res) => {
-  await initDatabase();
-  return app(req, res);
-};
+// Export for Vercel serverless (no database init needed!)
+module.exports = app;
 
