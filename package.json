@@ -4,7 +4,7 @@
   "description": "FlowVeda Water Management System",
   "private": true,
   "scripts": {
-    "vercel-build": "cd frontend && npm install && npm run build"
+    "build": "cd frontend && npm install && npm run build"
   },
   "repository": {
     "type": "git",
