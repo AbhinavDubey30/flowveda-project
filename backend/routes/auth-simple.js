@@ -43,24 +43,47 @@ function generateToken(user) {
 // Register endpoint (mock - just returns success)
 router.post('/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const {
+      username,
+      email,
+      password,
+      user_type,
+      mobile_number,
+      municipality_name,
+      location,
+      household_size,
+      device_id
+    } = req.body;
+
+    // Generate defaults if not provided
+    const finalUsername = username || `user_${MOCK_USERS.length + 1}`;
+    const finalEmail = email || `${finalUsername}@flowveda.local`;
+    const finalPassword = password || 'defaultpass123';
+    const userType = user_type && ['household', 'official'].includes(user_type) 
+      ? user_type 
+      : 'household';
 
     // Check if user already exists in mock users
-    const existingUser = MOCK_USERS.find(u => u.username === username || u.email === email);
+    const existingUser = MOCK_USERS.find(u => u.username === finalUsername || u.email === finalEmail);
     
     if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+      return res.status(400).json({ error: 'Username already exists' });
     }
 
     // Create mock user
     const newUser = {
       id: MOCK_USERS.length + 1,
-      username: username || `user${MOCK_USERS.length + 1}`,
-      email: email || `user${MOCK_USERS.length + 1}@example.com`,
-      password: await bcrypt.hash(password || 'password123', 10),
-      fullName: username || 'New User',
-      role: 'user',
-      user_type: 'household'
+      username: finalUsername,
+      email: finalEmail,
+      password: await bcrypt.hash(finalPassword, 10),
+      fullName: finalUsername,
+      role: userType === 'official' ? 'admin' : 'user',
+      user_type: userType,
+      mobile_number: mobile_number || '',
+      municipality_name: municipality_name || '',
+      location: location || '',
+      household_size: household_size || 1,
+      device_id: device_id || ''
     };
 
     MOCK_USERS.push(newUser);
@@ -78,29 +101,33 @@ router.post('/register', async (req, res) => {
     });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(400).json({ error: 'Registration failed' });
+    res.status(400).json({ error: error.message || 'Registration failed' });
   }
 });
 
 // Login endpoint
 router.post('/login', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, password } = req.body;
 
-    // Find user in mock users
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    // Find user in mock users (search by username or email)
     const user = MOCK_USERS.find(u => 
-      u.username === (username || email) || u.email === (email || username)
+      u.username === username || u.email === username
     );
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ detail: 'Invalid credentials' });
     }
 
     // Check password
     const isValidPassword = await bcrypt.compare(password, user.password);
     
     if (!isValidPassword) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ detail: 'Invalid credentials' });
     }
 
     // Generate token
@@ -112,8 +139,6 @@ router.post('/login', async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        fullName: user.fullName,
-        role: user.role,
         user_type: user.user_type
       }
     });
