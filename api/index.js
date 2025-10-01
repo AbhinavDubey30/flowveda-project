@@ -18,10 +18,6 @@ const authRoutes = require('../backend/routes/auth-simple');
 const telemetryRoutes = require('../backend/routes/telemetry');
 const waterRoutes = require('../backend/routes/water');
 
-// No database initialization needed - using CSV data only!
-console.log('🚀 Running in CSV-only mode (no database)');
-console.log('✅ Auth, Telemetry, and Water routes loaded');
-
 // Routes - all CSV-based
 app.use('/api/auth', authRoutes);
 app.use('/api/telemetry', telemetryRoutes);
