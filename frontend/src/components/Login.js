@@ -27,12 +27,12 @@ export default function Login({onLogin, onNavigateToAdmin}){
       }
     } else {
       // Household login logic
-      let loginData = {username: deviceId, password: mobileNumber};
+      let loginData = {username: username, password: password};
       try{
         const r = await login(loginData);
         onLogin(r);
       }catch(e){
-        setErr('Invalid credentials or server error');
+        setErr('Invalid credentials. Try: User-1 / admin123');
       }
     }
   }
@@ -118,26 +118,29 @@ export default function Login({onLogin, onNavigateToAdmin}){
             ) : (
               <>
                 <div className="mb-3">
-                  <label className="form-label">Device ID</label>
+                  <label className="form-label">Username (or Email)</label>
                   <input 
                     className="form-control" 
-                    value={deviceId} 
-                    onChange={e=>setDeviceId(e.target.value)} 
+                    value={username} 
+                    onChange={e=>setUsername(e.target.value)} 
                     required
-                    placeholder="Enter your device ID"
+                    placeholder="User-1 or user1@example.com"
                   />
+                  <small className="text-muted">
+                    Try: <strong>User-1</strong>, <strong>User-2</strong>, <strong>User-3</strong>, or <strong>resident</strong>
+                  </small>
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Mobile Number</label>
+                  <label className="form-label">Password</label>
                   <input 
-                    type="tel"
+                    type="password"
                     className="form-control" 
-                    value={mobileNumber} 
-                    onChange={e=>setMobileNumber(e.target.value)} 
+                    value={password} 
+                    onChange={e=>setPassword(e.target.value)} 
                     required
-                    placeholder="+91 9876543210"
+                    placeholder="admin123"
                   />
-                  <small className="text-muted">OTP will be sent to your mobile for verification</small>
+                  <small className="text-muted">Password for all demo users: <strong>admin123</strong></small>
                 </div>
               </>
             )}
